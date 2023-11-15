@@ -1,17 +1,20 @@
- import React from 'react';
+import React from 'react';
 import Stars from './Stars';
 
-const ProductList = ({ product, onDelete }) => {
+import style from'./module.css'
+
+const Products = ({ product, onDelete }) => {
   return (
-    <div key={product.id} className="product-card">
-      <img src={product.image} alt={product.name} />
-      <h3>{product.name}</h3>
-      <p>Price: {product.price}</p>
+    <div key={product.id} className="product-card" onDoubleClick={() => onDelete(product.id)}>
+      <div className='productImg'>
+      {product.images.map((image, idx) => (
+        <img key={idx} src={image} alt={`${product.name} ${idx}`} />
+      ))}</div>
+      <h3>Title: {product.title}</h3>
+      <h4>Price: {product.price} $</h4>
       <Stars rating={product.rating} />
-      <button onClick={() => onDelete(product.id)}>Delete</button>
     </div>
   );
 };
 
-
-export default ProductList;
+export default Products;

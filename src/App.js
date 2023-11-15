@@ -1,11 +1,12 @@
-import React from 'react';
+
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Products from './components/Products';
 
+
 import React, { useState, useEffect } from 'react';
-import ProductCard from './ProductCard';
+import ProductCard from './components/Products';
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -18,7 +19,11 @@ const App = () => {
     try {
       const response = await fetch('https://dummyjson.com/products');
       const data = await response.json();
-      setProducts(data);
+      if (Array.isArray(data.products)) {
+        setProducts(data.products);
+      } else {
+        console.error('Unexpected product data:', data);
+      }
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -34,7 +39,7 @@ const App = () => {
     <div>
       <h1>Header</h1>
       <div className="product-grid">
-        {products.map(product => (
+        {Array.isArray(products) && products.map(product => (
           <ProductCard key={product.id} product={product} onDelete={handleDelete} />
         ))}
       </div>
